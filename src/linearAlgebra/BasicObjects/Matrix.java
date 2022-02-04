@@ -1,13 +1,15 @@
 package linearAlgebra.BasicObjects;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.InputStream;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
 /* this class contains basic operations that can be done with any kind of matrix
-
  */
-public abstract class Matrix implements LinearObject {
+
+public class Matrix implements LinearObject {
     final private int numberOfLines;
     final private int numberOfColumns;
     private Double[][] matrix;
@@ -38,7 +40,7 @@ public abstract class Matrix implements LinearObject {
 
     public void setMatrix(InputStream inputStreamSource) {
         Scanner sc = new Scanner(inputStreamSource);
-        sc.useDelimiter(Pattern.compile("[ \n]"));
+        sc.useDelimiter(Pattern.compile("[\s\n]*"));
         matrix = new Double[numberOfLines][numberOfColumns];
 
         for (int i = 0; i < numberOfLines; i++) {
@@ -52,6 +54,14 @@ public abstract class Matrix implements LinearObject {
         matrix = sourceArray.clone();
     }
 
+    public void setElement(int line, int column, Object element) {
+        try {
+            matrix[line - 1][column - 1] = (Double) element;
+        } catch (ClassCastException e) {
+            System.out.println("Wrong input type, input should be numeric");
+        }
+    }
+
     public Double[][] getMatrix() {
         return matrix;
     }
@@ -61,26 +71,31 @@ public abstract class Matrix implements LinearObject {
         this.numberOfColumns = numberOfColumns;
     }
 
-    public void setElement(int line, int column, Object element) {
-        try {
-            matrix[line - 1][column - 1] = (Double) element;
-        } catch (ClassCastException e) {
-            System.out.println("Wrong input type, input should be numeric");
-        }
+    public Matrix(Double[] @NotNull [] matrix) {
+        numberOfLines = matrix.length;
+        numberOfColumns = matrix[0].length;
+        this.matrix = matrix.clone();
     }
 
-    public static Double[][] getSlice(int numberOfExcludingLine, int numberOfExcludingColumn, Double[][] matrixElements) {
+    public static Double[][] getSlice(int numberOfExcludingLine, int numberOfExcludingColumn, Double[] @NotNull [] matrixElements) {
+        /*returns a matrix without specified line and column
+        if your matrix consist of 1 element returns null
+        */
         Double[][] slice = new Double[matrixElements.length - 1][matrixElements[0].length - 1];
+        int tempLine = -1, tempColumn = -1;
         for (int i = 0; i < matrixElements.length; i++) {
-            if (i != numberOfExcludingLine-1) {
+            if (i != numberOfExcludingLine - 1) {
+                tempLine++;
                 for (int j = 0; j < matrixElements[0].length; j++) {
-                    if (j != numberOfExcludingColumn-1) {
-                        slice[i][j] = matrixElements[i][j];
+                    if (j != numberOfExcludingColumn - 1) {
+                        tempColumn++;
+                        slice[tempLine][tempColumn] = matrixElements[i][j];
                     }
                 }
+                tempColumn = -1;
             }
         }
-        return slice;
+        return slice.length == 0 ? null : slice;
     }
 
     public void printMatrix() {
