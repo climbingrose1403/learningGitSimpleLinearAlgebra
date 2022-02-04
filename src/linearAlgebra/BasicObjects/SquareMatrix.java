@@ -1,5 +1,9 @@
 package linearAlgebra.BasicObjects;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Optional;
+
 public class SquareMatrix extends Matrix {
 
     /*public SquareMatrix(int numberOfLines, int numberOfColumns) {
@@ -14,11 +18,11 @@ public class SquareMatrix extends Matrix {
         super(sizeOfMatrix, sizeOfMatrix);
     }
 
-    public Double getDeterminant(Double[][] matrixElements) {
+    public Double getDeterminant(Double[] @NotNull [] matrixElements) {
         Double result = 0.0;
         if (matrixElements.length != 1){
-            for (int i = 0; i < getNumberOfLines(); i++) {
-                result += Math.pow(-1, i+2) * getDeterminant(getSlice(1,i+1,matrixElements));
+            for (int i = 0; i < matrixElements.length; i++) {
+                result += Math.pow(-1, i+2) * matrixElements[0][i] * getDeterminant(getSlice(1,i+1,matrixElements));
             }
         }else{
             return matrixElements[0][0];
