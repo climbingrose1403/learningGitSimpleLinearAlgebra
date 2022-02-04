@@ -4,6 +4,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
+/** this class intended for displaying peculiarities od square matrices
+ *
+ */
 public class SquareMatrix extends Matrix {
 
     /*public SquareMatrix(int numberOfLines, int numberOfColumns) {

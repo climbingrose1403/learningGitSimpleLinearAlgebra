@@ -14,6 +14,27 @@ public class Matrix implements LinearObject {
     final private int numberOfColumns;
     private Double[][] matrix;
 
+    /** creates new matrix object with specified size
+     * to set elements, use specified method
+     * @param numberOfLines
+     * @param numberOfColumns
+     */
+    public Matrix(int numberOfLines, int numberOfColumns) {
+        this.numberOfLines = numberOfLines;
+        this.numberOfColumns = numberOfColumns;
+    }
+
+    /** crates new matrix object from transferred Double[][]
+     * matrix size matches array size
+     *
+     * @param matrix
+     */
+    public Matrix(Double[] @NotNull [] matrix) {
+        numberOfLines = matrix.length;
+        numberOfColumns = matrix[0].length;
+        this.matrix = matrix.clone();
+    }
+
     public int getNumberOfColumns() {
         return numberOfColumns;
     }
@@ -22,6 +43,9 @@ public class Matrix implements LinearObject {
         return numberOfLines;
     }
 
+    /** this group of methods intended to set matrix elements
+     * from different sources
+      */
     public void setMatrix() {
         setMatrix(System.in);
     }
@@ -54,6 +78,10 @@ public class Matrix implements LinearObject {
         matrix = sourceArray.clone();
     }
 
+    public Double[][] getMatrix() {
+        return matrix;
+    }
+
     public void setElement(int line, int column, Object element) {
         try {
             matrix[line - 1][column - 1] = (Double) element;
@@ -62,25 +90,10 @@ public class Matrix implements LinearObject {
         }
     }
 
-    public Double[][] getMatrix() {
-        return matrix;
-    }
-
-    public Matrix(int numberOfLines, int numberOfColumns) {
-        this.numberOfLines = numberOfLines;
-        this.numberOfColumns = numberOfColumns;
-    }
-
-    public Matrix(Double[] @NotNull [] matrix) {
-        numberOfLines = matrix.length;
-        numberOfColumns = matrix[0].length;
-        this.matrix = matrix.clone();
-    }
-
+     /**returns a matrix without specified line and column
+      if your matrix consist of 1 element returns null
+      */
     public static Double[][] getSlice(int numberOfExcludingLine, int numberOfExcludingColumn, Double[] @NotNull [] matrixElements) {
-        /*returns a matrix without specified line and column
-        if your matrix consist of 1 element returns null
-        */
         Double[][] slice = new Double[matrixElements.length - 1][matrixElements[0].length - 1];
         int tempLine = -1, tempColumn = -1;
         for (int i = 0; i < matrixElements.length; i++) {
@@ -98,15 +111,10 @@ public class Matrix implements LinearObject {
         return slice.length == 0 ? null : slice;
     }
 
-    public void printMatrix() {
-        for (int i = 0; i < numberOfLines; i++) {
-            for (int j = 0; j < numberOfColumns; j++) {
-                System.out.print(matrix[i][j] + " ");
-            }
-            System.out.println();
-        }
-    }
-
+    /** returns matrix as string
+     *
+     * @return
+     */
     public String getStringMatrix() {
         StringBuilder stringMatrix = new StringBuilder();
         for (int i = 0; i < numberOfLines; i++) {
@@ -119,4 +127,12 @@ public class Matrix implements LinearObject {
         return stringMatrix.toString();
     }
 
+    public void printMatrix() {
+        for (int i = 0; i < numberOfLines; i++) {
+            for (int j = 0; j < numberOfColumns; j++) {
+                System.out.print(matrix[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
 }
