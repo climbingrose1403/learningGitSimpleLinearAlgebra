@@ -29,10 +29,10 @@ public class Matrix implements LinearObject {
      *
      * @param matrix
      */
-    public Matrix(Double[] @NotNull [] matrix) {
+    public Matrix(Number[] @NotNull [] matrix) {
         numberOfLines = matrix.length;
         numberOfColumns = matrix[0].length;
-        this.matrix = matrix.clone();
+        setMatrix(matrix);
     }
 
     public int getNumberOfColumns() {
@@ -53,11 +53,7 @@ public class Matrix implements LinearObject {
     public void setMatrix(Number[][] sourceArray) {
         for (int i = 0; i < numberOfLines; i++) {
             for (int j = 0; j < numberOfColumns; j++) {
-                try {
                     matrix[i][j] = (Double) sourceArray[i][j];
-                } catch (ClassCastException e) {
-                    System.out.println(" you");
-                }
             }
         }
     }
@@ -74,20 +70,13 @@ public class Matrix implements LinearObject {
         }
     }
 
-    public void setMatrix(Double[][] sourceArray) {
-        matrix = sourceArray.clone();
-    }
 
     public Double[][] getMatrix() {
         return matrix;
     }
 
-    public void setElement(int line, int column, Object element) {
-        try {
-            matrix[line - 1][column - 1] = (Double) element;
-        } catch (ClassCastException e) {
-            System.out.println("Wrong input type, input should be numeric");
-        }
+    public void setElement(int line, int column, Number element) {
+            matrix[line - 1][column - 1] = element.doubleValue();
     }
 
      /**returns a matrix without specified line and column
@@ -133,6 +122,15 @@ public class Matrix implements LinearObject {
                 System.out.print(matrix[i][j] + " ");
             }
             System.out.println();
+        }
+    }
+
+    @Override
+    public void multiplyToNumber(Number number) {
+        for(int i = 0; i < getNumberOfLines();i++){
+            for(int j = 0 ; j < getNumberOfColumns();j++){
+                matrix[i][j] *= number.doubleValue();
+            }
         }
     }
 }
